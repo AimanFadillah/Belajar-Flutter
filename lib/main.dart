@@ -1,43 +1,42 @@
 import "package:flutter/material.dart";
 
-void main(){
+class Counter extends StatefulWidget {
+  const Counter ({super.key});
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int _angka = 1;
+
+  void bertambah (){
+    setState(() {
+      _angka++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(onPressed: bertambah, child: const Text("Tambah")),
+        const SizedBox(width: 16),
+        Text("$_angka"),
+      ],
+    );
+  }
+}
+
+void main () {
   runApp(
-      const MaterialApp(
-        title: "Homepage",
-        debugShowCheckedModeBanner: false,
-        home:SafeArea(child: MyApp())
-      )
+    const MaterialApp(
+      home:Scaffold(
+        body: Center(
+          child: Counter(),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+    )
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title:const Text("Catan",style: TextStyle(color: Colors.white,fontSize: 20)),
-        backgroundColor: Colors.purple,
-        actions:const [
-          IconButton(onPressed: null, icon: Icon(Icons.search,color: Colors.white),tooltip: "Cari Catatan")
-        ],
-      ),
-      body:const BodyApp(),
-      floatingActionButton:const FloatingActionButton(
-          onPressed: null,
-          tooltip: "Tambah Catatan",
-          child:Icon(Icons.add)
-      ),
-    );
-  }
-}
-
-class BodyApp extends StatelessWidget{
-  const BodyApp ({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
-    );
-  }
 }
