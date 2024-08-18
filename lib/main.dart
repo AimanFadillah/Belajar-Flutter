@@ -19,10 +19,15 @@ class MyApp extends StatelessWidget {
         title:const Text("Catan",style: TextStyle(color: Colors.white,fontSize: 20)),
         backgroundColor: Colors.purple,
         actions:const [
-          IconButton(onPressed: null, icon: Icon(Icons.search,color: Colors.white),tooltip: "Search")
+          IconButton(onPressed: null, icon: Icon(Icons.search,color: Colors.white),tooltip: "Cari Catatan")
         ],
       ),
       body:const BodyApp(),
+      floatingActionButton:const FloatingActionButton(
+          onPressed: null,
+          tooltip: "Tambah Catatan",
+          child:Icon(Icons.add)
+      ),
     );
   }
 }
@@ -32,7 +37,7 @@ class BodyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("Hello Word"),
+      child: Text("Hello word ke"),
     );
   }
 }
