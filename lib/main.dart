@@ -1,43 +1,102 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
-void main(){
-  runApp(
-      const MaterialApp(
-        title: "Homepage",
-        debugShowCheckedModeBanner: false,
-        home:SafeArea(child: MyApp())
-      )
-  );
+class Product {
+  const Product({required this.name});
+
+  final String name;
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+typedef CartChangedCallback = Function (Product product,bool inCart);
+
+class ShoppingListItem extends StatelessWidget {
+  ShoppingListItem({
+      required this.product,
+      required this.inCart,
+      required this.onCartChanged,
+  }) : super(key:ObjectKey(product));
+
+  final Product product;
+  final bool inCart;
+  final CartChangedCallback onCartChanged;
+
+  Color _getColor (BuildContext context){
+    return inCart ? Colors.black54 : Theme.of(context).primaryColor;
+  }
+
+  TextStyle? _getTextStyle (BuildContext context){
+    if(!inCart) return null;
+    return const TextStyle(
+      color: Colors.black54,
+      decoration: TextDecoration.lineThrough
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: (){
+        onCartChanged(product,inCart);
+      },
+      leading: CircleAvatar(
+        backgroundColor: _getColor(context),
+      ),
+      title: Text(
+        product.name,
+        style: _getTextStyle(context),
+      ),
+    );
+  }
+}
+
+class ShoppingList extends StatefulWidget{
+  const ShoppingList({required this.products,super.key});
+
+  final List<Product> products;
+  @override
+  State<ShoppingList> createState() => _ShoppingListState();
+}
+
+class _ShoppingListState extends State<ShoppingList>{
+  final _shoppingCart = <Product>{};
+
+  void _handleCartChanged(Product product,bool inCart){
+    setState(() {
+      if(!inCart){
+        _shoppingCart.add(product);
+      }else{
+        _shoppingCart.remove(product);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:const Text("Catan",style: TextStyle(color: Colors.white,fontSize: 20)),
-        backgroundColor: Colors.purple,
-        actions:const [
-          IconButton(onPressed: null, icon: Icon(Icons.search,color: Colors.white),tooltip: "Cari Catatan")
-        ],
-      ),
-      body:const BodyApp(),
-      floatingActionButton:const FloatingActionButton(
-          onPressed: null,
-          tooltip: "Tambah Catatan",
-          child:Icon(Icons.add)
+      body: ListView(
+        children: widget.products.map((product) {
+          return ShoppingListItem(
+              product: product,
+              inCart: _shoppingCart.contains(product),
+              onCartChanged: _handleCartChanged
+          );
+        }).toList(),
       ),
     );
   }
 }
 
-class BodyApp extends StatelessWidget{
-  const BodyApp ({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
-    );
-  }
+void main () {
+  runApp(
+    const MaterialApp(
+      title: "Shoopping list",
+      debugShowCheckedModeBanner: false,
+      home:ShoppingList(
+          products:[
+            Product(name: "mainan"),
+            Product(name:"makaan"),
+            Product(name: "jajanan")
+          ]
+      )
+    )
+  );
 }
