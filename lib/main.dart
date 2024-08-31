@@ -36,8 +36,16 @@ class BodyApp extends StatelessWidget{
   const BodyApp ({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(child:Image.asset("images/mobil.jpg")),
+        Expanded(
+          flex: 1,
+            child:Image.asset("images/rumah.jpg")
+        ),
+        Expanded(child:Image.asset("images/sofa.jpg")),
+      ],
     );
   }
 }
