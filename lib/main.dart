@@ -36,8 +36,16 @@ class BodyApp extends StatelessWidget{
   const BodyApp ({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
+    // return GridView.extent(
+    //     maxCrossAxisExtent: 200,
+    //     padding: const EdgeInsets.all(4),
+    //     mainAxisSpacing: 4,
+    //     crossAxisSpacing: 2,
+    //     children: List.generate(6,(index) => Expanded(child: Image.asset("images/img${index + 1}.jpg"))),
+    // );
+    return GridView.count(
+        crossAxisCount: 2,
+        children: List.generate(6,(index) => Expanded(child: Image.asset("images/img${index + 1}.jpg"))),
     );
   }
 }
