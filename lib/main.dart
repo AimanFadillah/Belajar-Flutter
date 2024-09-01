@@ -36,8 +36,12 @@ class BodyApp extends StatelessWidget{
   const BodyApp ({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
+    return ListView(
+      children: List.generate(10,(index) => ListTile(
+        title: Text("aku ke ${index + 1}"),
+        subtitle: Text("ini adalah list yang ke ${index + 1}"),
+        leading: const Icon(Icons.unarchive_rounded),
+      )),
     );
   }
 }
