@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
+import "package:untitled/controller/CatatanController.dart";
+import 'package:get/get.dart';
 
 void main(){
   runApp(
-      const MaterialApp(
+      const GetMaterialApp(
         title: "Homepage",
         debugShowCheckedModeBanner: false,
         home:SafeArea(child: MyApp())
@@ -18,9 +20,6 @@ class MyApp extends StatelessWidget {
       appBar: AppBar(
         title:const Text("Catan",style: TextStyle(color: Colors.white,fontSize: 20)),
         backgroundColor: Colors.purple,
-        actions:const [
-          IconButton(onPressed: null, icon: Icon(Icons.search,color: Colors.white),tooltip: "Cari Catatan")
-        ],
       ),
       body:const BodyApp(),
       floatingActionButton:const FloatingActionButton(
@@ -36,8 +35,17 @@ class BodyApp extends StatelessWidget{
   const BodyApp ({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
+    final catatanController = Get.put(CatatanController());
+    return SingleChildScrollView(
+      child: Column(
+        children: List.generate(100,(index) =>
+          ListTile(
+            title: Text("aku ke ${index + 1}"),
+            subtitle: Text("ini adalah list yang ke ${index + 1}"),
+            leading: const Icon(Icons.mail),
+          )
+        ),
+      ),
     );
   }
 }
