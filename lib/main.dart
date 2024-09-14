@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
-import 'controller/MainController.dart';
+import 'package:untitled/controller/MangaController.dart';
 
 void main(){
   runApp(
@@ -16,22 +16,19 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    final mainController = Get.put(MainController());
     return Scaffold(
       appBar: AppBar(
-        title:Obx(() => Text("Catan ${mainController.count}",style: TextStyle(color: Colors.white,fontSize: 20))),
-        backgroundColor: Colors.purple,
-        actions:[
-          IconButton(onPressed: () => Get.to(Other()), icon: const Icon(Icons.search,color: Colors.white),tooltip: "Cari Catatan")
+        title: const Text("Manga",style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.blue,
+        actions:const [
+          IconButton(onPressed: null, icon: const Icon(Icons.search,color: Colors.white),tooltip: "Cari Catatan")
         ],
       ),
-      body:const BodyApp(),
-      floatingActionButton:FloatingActionButton(
-          onPressed: () {
-            mainController.increment();
-          },
+      body:BodyApp(),
+      floatingActionButton:const FloatingActionButton(
+          onPressed: null,
           tooltip: "Tambah Catatan",
-          child:const Icon(Icons.add)
+          child:Icon(Icons.add)
       ),
     );
   }
@@ -41,21 +38,32 @@ class BodyApp extends StatelessWidget{
   const BodyApp ({super.key});
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Hello word ke"),
-    );
-  }
-}
-
-class Other extends StatelessWidget {
-  const Other ({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Page 2"),
+    final mangaController = Get.put(MangaController());
+    return Obx(() => GridView.builder(
+      gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 20,
       ),
-    );    
+      shrinkWrap: true,
+      itemCount: mangaController.mangas.length,
+      itemBuilder: (context,i) {
+        final manga = mangaController.mangas[i];
+        return Column(
+          children:[
+            Expanded(child: Image.network("https://mangapi-man.vercel.app/gambar?url=${manga.gambar}")),
+            Text(truncateText(manga.judul as String)),
+          ]
+        );
+      },
+    ));
   }
 }
+
+String truncateText(String text, {int cutoff = 20}) {
+  if (text.length <= cutoff) {
+    return text;
+  } else {
+    return '${text.substring(0, cutoff)}...';
+  }
+}
+
