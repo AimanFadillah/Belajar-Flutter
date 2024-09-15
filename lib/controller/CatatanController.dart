@@ -7,6 +7,7 @@ import 'package:untitled/model/Catatan.dart';
 
 class CatatanController extends GetxController {
   RxList<Catatan> catans = RxList([]);
+  RxBool loading = RxBool(true);
   Database? db;
 
   @override
@@ -28,14 +29,17 @@ class CatatanController extends GetxController {
     // await updateCatan(Catatan(id: 1,nama: "pertama",isi: "nama saya shiva"));
     // await deleteCatan(2);
     await this.listCatan();
-    print(catans);
   }
 
   insertCatan (Catatan catatan) async {
     await db?.insert("catan",catatan.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
+    await this.listCatan();
   }
 
   listCatan () async {
+    catans.value = [];
+    loading.value = true;
+
     final List<Map<String, Object?>>? datas = await db?.query("catan");
 
     if(datas == null){
@@ -46,6 +50,7 @@ class CatatanController extends GetxController {
     for(final catan in datas){
       catans.add(Catatan.fromJson(catan));
     }
+    loading.value = false;
   }
 
   updateCatan (Catatan catatan) async {

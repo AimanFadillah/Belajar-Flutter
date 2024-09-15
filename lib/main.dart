@@ -1,13 +1,19 @@
 import "package:flutter/material.dart";
+import "package:untitled/CreateCatan.dart";
+import "package:untitled/component/ListCatan.dart";
 import "package:untitled/controller/CatatanController.dart";
 import 'package:get/get.dart';
 
 void main(){
   runApp(
-      const GetMaterialApp(
+      GetMaterialApp(
         title: "Homepage",
         debugShowCheckedModeBanner: false,
-        home:SafeArea(child: MyApp())
+        initialRoute: "/",
+        getPages: [
+          GetPage(name: "/",page: () => const MyApp()),
+          GetPage(name: "/create", page: () => const CreateCatan())
+        ],
       )
   );
 }
@@ -22,8 +28,10 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.purple,
       ),
       body:const BodyApp(),
-      floatingActionButton:const FloatingActionButton(
-          onPressed: null,
+      floatingActionButton:FloatingActionButton(
+          onPressed: (){
+            Get.toNamed("/create");
+          },
           tooltip: "Tambah Catatan",
           child:Icon(Icons.add)
       ),
@@ -36,16 +44,26 @@ class BodyApp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     final catatanController = Get.put(CatatanController());
-    return SingleChildScrollView(
-      child: Column(
-        children: List.generate(100,(index) =>
-          ListTile(
-            title: Text("aku ke ${index + 1}"),
-            subtitle: Text("ini adalah list yang ke ${index + 1}"),
-            leading: const Icon(Icons.mail),
-          )
-        ),
-      ),
+    return Obx(() =>
+        catatanController.loading.value ?
+        const Center(
+            child: CircularProgressIndicator()
+        ) :
+        SingleChildScrollView(
+          child: Column(
+            children:[
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: catatanController.catans.length,
+                  itemBuilder: (context,index){
+                    final catan = catatanController.catans[index];
+                    return ListCatan(nama: catan.nama as String);
+                  }),
+            ]
+          ),
+        )
     );
   }
 }
+
+
