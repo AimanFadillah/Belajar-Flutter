@@ -1,28 +1,3 @@
-// class Catatan {
-//   final int? id;
-//   final String nama;
-//   final String isi;
-//
-//   Catatan({
-//     this.id,
-//     required this.nama,
-//     required this.isi
-//   });
-//
-//   Map<String,Object?> toMap (){
-//     return {
-//       "id":id,
-//       "nama":nama,
-//       "isi":isi,
-//     };
-//   }
-//
-//   @override
-//   String toString (){
-//     return "catan{id:$id,nama:$nama,isi:$isi}";
-//   }
-// }
-
 class Catatan {
   int? id;
   String? nama;
@@ -42,5 +17,10 @@ class Catatan {
     data['nama'] = this.nama;
     data['isi'] = this.isi;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Catatan{id: $id, nama: $nama, isi: $isi}';
   }
 }

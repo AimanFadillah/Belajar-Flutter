@@ -24,28 +24,36 @@ class CatatanController extends GetxController {
         return db.execute("CREATE TABLE catan (id INTEGER PRIMARY KEY AUTOINCREMENT, nama STRING, isi TEXT)");
       }
     );
-    // await insertCatan(Catatan(nama: "hai", isi: "nama saya shova"));
-    await listCatan();
-    print(await catans.value);
+    // await insertCatan(Catatan(nama: "kadua", isi: "nama saya shiva"));
+    // await updateCatan(Catatan(id: 1,nama: "pertama",isi: "nama saya shiva"));
+    // await deleteCatan(2);
+    await this.listCatan();
+    print(catans);
   }
 
-  // insertCatan (Catatan catatan) async {
-  //   await db?.insert("catan",catatan.toMap(),conflictAlgorithm: ConflictAlgorithm.replace);
-  // }
+  insertCatan (Catatan catatan) async {
+    await db?.insert("catan",catatan.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
+  }
 
-    listCatan () async {
-      final List<Map<String, Object?>>? datas = await db?.query("catan");
-      String json = jsonEncode(datas);
+  listCatan () async {
+    final List<Map<String, Object?>>? datas = await db?.query("catan");
 
-      if(datas == null){
-        print("tidak ada");
-        return [];
-      }
-
-      for(final catan in jsonDecode(json)){
-        catans.add(Catatan.fromJson(catan));
-      }
+    if(datas == null){
+      print("tidak ada");
+      return [];
     }
 
+    for(final catan in datas){
+      catans.add(Catatan.fromJson(catan));
+    }
+  }
+
+  updateCatan (Catatan catatan) async {
+    await db?.update("catan",catatan.toJson(),where:"id = ?",whereArgs: [catatan.id]);
+  }
+
+  deleteCatan (int id) async {
+    await db?.delete("catan",where: "id = ?",whereArgs: [id]);
+  }
 
 }
