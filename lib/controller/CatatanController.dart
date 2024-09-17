@@ -38,7 +38,7 @@ class CatatanController extends GetxController {
 
   listCatan () async {
     catans.value = [];
-    loading.value = true;
+    // loading.value = true;
 
     final List<Map<String, Object?>>? datas = await db?.query("catan");
 
@@ -59,6 +59,7 @@ class CatatanController extends GetxController {
 
   deleteCatan (int id) async {
     await db?.delete("catan",where: "id = ?",whereArgs: [id]);
+    this.listCatan();
   }
 
 }

@@ -51,15 +51,9 @@ class BodyApp extends StatelessWidget{
         ) :
         SingleChildScrollView(
           child: Column(
-            children:[
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: catatanController.catans.length,
-                  itemBuilder: (context,index){
-                    final catan = catatanController.catans[index];
-                    return ListCatan(nama: catan.nama as String);
-                  }),
-            ]
+            children: catatanController.catans.map((catan) {
+              return ListCatan(catan: catan);
+            }).toList(),
           ),
         )
     );
